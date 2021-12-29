@@ -1,9 +1,24 @@
-import { Link } from "react-router-dom"
+import axios from "axios"
+import { Link, useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import { useRecoilState } from "recoil"
 import { authenticated } from "../store/authStore"
 
 export default function Navigation(){
     const [auth, setAuth] = useRecoilState(authenticated)
+    const navigate = useNavigate()
+
+    const logout = async() => {
+        await axios.get('/api/logout')
+
+        localStorage.removeItem('token')
+
+        setAuth({
+            check : false
+        })
+        navigate('/login')
+        toast.error("Kamu Telah Logout!")
+    }
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -27,8 +42,13 @@ export default function Navigation(){
                             <li className="nav-item">
                                 <Link className="nav-link" to={"/about"}>About</Link>
                             </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to={"/about"}>{auth.user.name}</Link>
+                            <li className="nav-item dropdown">
+                                <Link className="nav-link dropdown-toggle" to="javascript:void(0)" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    { auth.user.name }
+                                </Link>
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><button className="dropdown-item" onClick={logout}>Logout</button></li>
+                                </ul>
                             </li>
                         </>
                     )
