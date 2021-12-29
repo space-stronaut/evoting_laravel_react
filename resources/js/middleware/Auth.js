@@ -11,7 +11,7 @@ export default function Auth({children}){
         if (auth.check === true) {
            navigate('/')
         }  
-    }, [])
+    }, [auth.check])
 
     return children
 }

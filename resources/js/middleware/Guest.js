@@ -11,7 +11,7 @@ export default function Guest({children}){
         if (auth.check === false) {
            navigate('/login')
         }  
-    }, [])
+    }, [auth.check])
 
     return children
 }

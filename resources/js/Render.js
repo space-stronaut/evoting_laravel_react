@@ -5,6 +5,8 @@ import {BrowserRouter} from 'react-router-dom'
 import Navigation from './components/Navigation';
 import { RecoilRoot, useRecoilState } from 'recoil';
 import { authenticated } from './store/authStore';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Render() {
     const [auth, setAuth] = useRecoilState(authenticated)
@@ -22,6 +24,7 @@ function Render() {
                 check : true,
                 user : response.data
             })
+            toast.success(`Selamat Datang ${response.data.name}`)
             console.log(response)
         } catch (error) {
             console.log(error)
@@ -32,7 +35,7 @@ function Render() {
 
     useEffect(() => {
         getData()
-    },[auth.user]);
+    },[]);
 
     return (
         <>
@@ -41,6 +44,7 @@ function Render() {
                     <>
                         <Navigation />
                         <Router />
+                        <ToastContainer />
                     </>
                 ) : (
                     <div className="container d-flex justify-content-center align-items-center">

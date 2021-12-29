@@ -3,6 +3,7 @@ import axios from "axios"
 import { useRecoilState } from "recoil"
 import { authenticated } from "../../store/authStore"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 export default function Login(){
     const navigate = useNavigate()
@@ -29,10 +30,12 @@ export default function Login(){
             })
             console.log(response);
             navigate('/')
+            toast.success(`Selamat Datang ${response.data.user.name}`)
         } catch (error) {
             console.log(error)
             setLoading(false)
             setError(true)
+            toast.error('Login Gagal')
         }
     }
 
