@@ -5755,6 +5755,16 @@ function Login() {
       auth = _useRecoilState2[0],
       setAuth = _useRecoilState2[1];
 
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      error = _useState6[0],
+      setError = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      loading = _useState8[0],
+      setLoading = _useState8[1];
+
   var credentials = {
     email: email,
     password: password
@@ -5768,11 +5778,12 @@ function Login() {
           switch (_context.prev = _context.next) {
             case 0:
               e.preventDefault();
-              _context.prev = 1;
-              _context.next = 4;
+              setLoading(true);
+              _context.prev = 2;
+              _context.next = 5;
               return axios__WEBPACK_IMPORTED_MODULE_2___default().post('/api/login', credentials);
 
-            case 4:
+            case 5:
               response = _context.sent;
               localStorage.setItem('token', response.data.token);
               setAuth({
@@ -5781,20 +5792,22 @@ function Login() {
               });
               console.log(response);
               navigate('/');
-              _context.next = 14;
+              _context.next = 17;
               break;
 
-            case 11:
-              _context.prev = 11;
-              _context.t0 = _context["catch"](1);
+            case 12:
+              _context.prev = 12;
+              _context.t0 = _context["catch"](2);
               console.log(_context.t0);
+              setLoading(false);
+              setError(true);
 
-            case 14:
+            case 17:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[1, 11]]);
+      }, _callee, null, [[2, 12]]);
     }));
 
     return function login(_x) {
@@ -5817,7 +5830,13 @@ function Login() {
           className: "card-body",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("form", {
             onSubmit: login,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+            children: [error === true ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+              className: "form-group",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                className: "alert alert-danger",
+                children: "Credentials Doesnt match our record"
+              })
+            }) : "", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
               className: "form-group",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
                 htmlFor: "",
@@ -5850,8 +5869,14 @@ function Login() {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "form-group",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
-                className: "btn btn-primary btn-block",
-                children: "Submit"
+                className: "btn btn-primary btn-block d-flex justify-content-center",
+                children: loading === true ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                  "class": "spinner-border text-white my-auto",
+                  role: "status",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+                    "class": "sr-only"
+                  })
+                }) : "Submit"
               })
             })]
           })

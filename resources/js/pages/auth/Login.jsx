@@ -9,6 +9,8 @@ export default function Login(){
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [auth, setAuth] = useRecoilState(authenticated)
+    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
     const credentials = {
         email,
         password
@@ -17,6 +19,7 @@ export default function Login(){
 
     const login = async(e) => {
         e.preventDefault()
+        setLoading(true)
         try {
             const response = await axios.post('/api/login', credentials)
             localStorage.setItem('token', response.data.token)
@@ -28,6 +31,8 @@ export default function Login(){
             navigate('/')
         } catch (error) {
             console.log(error)
+            setLoading(false)
+            setError(true)
         }
     }
 
@@ -40,16 +45,33 @@ export default function Login(){
                 </div>
                 <div className="card-body">
                     <form onSubmit={login}>
+                        {
+                            error === true ? (
+                                <div className="form-group">
+                                    <div className="alert alert-danger">
+                                        Credentials Doesnt match our record
+                                    </div>
+                                </div>
+                            ) : ""
+                        }
                         <div className="form-group">
                             <label htmlFor="">Email</label>
-                            <input type="email" name="" onChange={(e) => setEmail(e.target.value)} value={email} id="" className="form-control" />
+                            <input type="email" name="" onChange={(e) => setEmail(e.target.value)} value={email} id="" className={`form-control`} />
                         </div>
                         <div className="form-group">
                             <label htmlFor="">Password</label>
                             <input type="password" name="" value={password} onChange={(e) => setPassword(e.target.value)} id="" className="form-control" />
                         </div>
                         <div className="form-group">
-                            <button className="btn btn-primary btn-block">Submit</button>
+                            <button className="btn btn-primary btn-block d-flex justify-content-center">
+                                {
+                                    loading === true ? (
+                                        <div class="spinner-border text-white my-auto" role="status">
+                                            <span class="sr-only"></span>
+                                        </div>
+                                    ) : "Submit"
+                                }
+                            </button>
                         </div>
                     </form>
                 </div>
