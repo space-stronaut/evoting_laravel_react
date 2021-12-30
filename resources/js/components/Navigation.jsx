@@ -9,7 +9,7 @@ export default function Navigation(){
     const navigate = useNavigate()
 
     const logout = async() => {
-        await axios.get('/api/logout')
+       await axios.get('/api/logout')
 
         localStorage.removeItem('token')
 
@@ -41,6 +41,15 @@ export default function Navigation(){
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to={"/about"}>About</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/kecamatan"}>Kecamatan</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/desa"}>Desa</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/calon"}>Daftar Calon</Link>
                             </li>
                             <li className="nav-item dropdown">
                                 <Link className="nav-link dropdown-toggle" to="javascript:void(0)" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

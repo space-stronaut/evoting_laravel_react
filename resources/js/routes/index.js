@@ -4,6 +4,9 @@ import About from '../pages/About'
 import Login from '../pages/auth/Login'
 import Guest from '../middleware/Guest'
 import Auth from '../middleware/Auth'
+import KecamatanIndex from '../pages/kecamatan/KecamatanIndex'
+import Calon from '../pages/calon/Calon'
+import Desa from '../pages/desa/Desa'
 
 export default function Router(){
     return (
@@ -18,6 +21,21 @@ export default function Router(){
                 <Auth>
                     <Login />
                 </Auth>
+            } />
+            <Route path="/kecamatan" element={
+                <Guest>
+                    <KecamatanIndex />
+                </Guest>
+            } />
+            <Route path="/calon" element={
+                <Guest>
+                    <Calon />
+                </Guest>
+            } />
+            <Route path="/desa" element={
+                <Guest>
+                    <Desa />
+                </Guest>
             } />
         </Routes>
     )

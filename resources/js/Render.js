@@ -48,8 +48,8 @@ function Render() {
                     </>
                 ) : (
                     <div className="container d-flex justify-content-center align-items-center">
-                        <div class="spinner-border text-primary my-auto" role="status">
-                            <span class="sr-only"></span>
+                        <div className="spinner-border text-primary my-auto" role="status">
+                            <span className="sr-only"></span>
                         </div>
                     </div>
                 )

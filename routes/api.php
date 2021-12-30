@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
+use App\Http\Controllers\Api\KecamatanController;
+use App\Http\Controllers\Api\CalonController;
+use App\Http\Controllers\Api\DesaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', LoginController::class);
 Route::get('/logout', LogoutController::class);
+Route::resource('/kecamatan', KecamatanController::class);
+Route::resource('calon', CalonController::class);
+Route::post('/calon/{id}', [CalonController::class, 'update']);
+Route::resource('desa', DesaController::class);
+Route::get('/desa/search/{id}', [DesaController::class, 'search']);
