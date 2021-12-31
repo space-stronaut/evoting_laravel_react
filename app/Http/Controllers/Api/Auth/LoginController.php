@@ -30,6 +30,8 @@ class LoginController extends Controller
                     'message' => ['These credentials do not match our records.']
                 ], 404);
             }
+
+            // $user->tokens()->delete();
         
             $token = $user->createToken('ApiToken')->plainTextToken;
         

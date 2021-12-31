@@ -43,6 +43,7 @@ export default function Desa(){
             setDesas(response.data.desas)
             setKecamatans(response.data.kecamatans)
             setLoading(true)
+            console.log(response)
         } catch (error) {
             console.log(error)
         }
@@ -134,6 +135,7 @@ export default function Desa(){
                             <thead className="thead-dark">
                                 <tr>
                                     <th>Nama Desa</th>
+                                    <th>Nama Kecamatan</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -148,6 +150,9 @@ export default function Desa(){
                                             <tr key={e.id}>
                                                 <td>
                                                     {e.nama}
+                                                </td>
+                                                <td>
+                                                    {e.namaKecamatan}
                                                 </td>
                                                 <td className="d-flex align-items-center">
                                                     <button className="btn btn-danger" onClick={() => deleteData(e.id)}>Hapus</button>
@@ -178,7 +183,7 @@ export default function Desa(){
                         </div>
                         <div className="form-group">
                             <label htmlFor="">Kecamatan</label>
-                            <select name="" defaultValue={1} onChange={(e) => setKecamatanId(e.target.value)} id="" className="form-control">
+                            <select name="" onChange={(e) => setKecamatanId(e.target.value)} id="" className="form-control">
                                 <option value="">Pilih Kecamatan</option>
                                 {
                                     kecamatans.map(e => (

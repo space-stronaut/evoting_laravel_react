@@ -14,7 +14,7 @@ function Render() {
 
     const getData = async() => {
         try {
-            const response = await axios.get('/api/user', {
+            const response = await axios.get('/api/me', {
                 headers : {
                     "Authorization" : "Bearer " + localStorage.getItem('token')
                 }
@@ -25,9 +25,9 @@ function Render() {
                 user : response.data
             })
             toast.success(`Selamat Datang ${response.data.name}`)
-            console.log(response)
-        } catch (error) {
-            console.log(error)
+            console.log(response.data.users[0])
+        } catch(e){
+            console.log('error')
         }
 
         setLoading(true)
@@ -35,6 +35,7 @@ function Render() {
 
     useEffect(() => {
         getData()
+        console.log(auth.check)
     },[]);
 
     return (

@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Desa;
-use App\Models\Kecamatan;
+use App\Models\Tps;
 use Illuminate\Http\Request;
 
-class DesaController extends Controller
+class TpsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,23 +16,25 @@ class DesaController extends Controller
      */
     public function index()
     {
-        $desas = Desa::join('kecamatans', 'desas.kecamatanId', '=', 'kecamatans.id')->get();
-            $kecamatans = Kecamatan::all();
+        $tps = Tps::join('desas', 'tps.desaId', '=', 'desas.id')
+                ->select('tps.*', 'desas.nama AS namaDesa')    
+                ->get();
+        $desas = Desa::all();
 
-            return response()->json([
-                'desas' => $desas,
-                'kecamatans' => $kecamatans
-            ], 200);
+        return response()->json([
+            'tps' => $tps,
+            'desas' => $desas
+        ]);
     }
 
     public function search($id)
     {
         $query = $id;
-        $desas = Desa::where('nama', 'like', '%'.$query.'%')->join('kecamatans', 'desas.kecamatanId', '=', 'kecamatans.id')->get();
-
+        $tps = Tps::join('desas', 'tps.desaId', '=', 'desas.id')
+        ->select('tps.*', 'desas.nama AS namaDesa')->where('tps.nama', 'like', '%'.$query.'%')->get();
+    
         return response()->json([
-            'desas' => $desas,
-            'query' => $query
+            'tps' => $tps
         ]);
     }
 
@@ -54,10 +56,10 @@ class DesaController extends Controller
      */
     public function store(Request $request)
     {
-        Desa::create($request->all());
+        Tps::create($request->all());
 
         return response()->json([
-            'success' => true
+            'status' => true
         ]);
     }
 
@@ -92,10 +94,10 @@ class DesaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Desa::find($id)->update($request->all());
+        Tps::find($id)->update($request->all());
 
         return response()->json([
-            'success' => true
+            'status' => true
         ]);
     }
 
@@ -107,10 +109,10 @@ class DesaController extends Controller
      */
     public function destroy($id)
     {
-        Desa::find($id)->delete();
+        Tps::find($id)->delete();
 
         return response()->json([
-            'success' => true
+            'status' => true
         ]);
     }
 }

@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Desa;
-use App\Models\Kecamatan;
+use App\Models\Calon;
+use App\Models\Tps;
+use App\Models\Voting;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Test;
 
-class DesaController extends Controller
+class TestController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,24 +17,11 @@ class DesaController extends Controller
      */
     public function index()
     {
-        $desas = Desa::join('kecamatans', 'desas.kecamatanId', '=', 'kecamatans.id')->get();
-            $kecamatans = Kecamatan::all();
+        $datas = Voting::all();
 
-            return response()->json([
-                'desas' => $desas,
-                'kecamatans' => $kecamatans
-            ], 200);
-    }
-
-    public function search($id)
-    {
-        $query = $id;
-        $desas = Desa::where('nama', 'like', '%'.$query.'%')->join('kecamatans', 'desas.kecamatanId', '=', 'kecamatans.id')->get();
-
-        return response()->json([
-            'desas' => $desas,
-            'query' => $query
-        ]);
+        foreach (Calon::all() as $key) {
+            echo count(Voting::where('calonId', $key->id)->get()) . '<br>';
+        }
     }
 
     /**
@@ -54,11 +42,7 @@ class DesaController extends Controller
      */
     public function store(Request $request)
     {
-        Desa::create($request->all());
-
-        return response()->json([
-            'success' => true
-        ]);
+        //
     }
 
     /**
@@ -92,11 +76,7 @@ class DesaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Desa::find($id)->update($request->all());
-
-        return response()->json([
-            'success' => true
-        ]);
+        //
     }
 
     /**
@@ -107,10 +87,6 @@ class DesaController extends Controller
      */
     public function destroy($id)
     {
-        Desa::find($id)->delete();
-
-        return response()->json([
-            'success' => true
-        ]);
+        //
     }
 }

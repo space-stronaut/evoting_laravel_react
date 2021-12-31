@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class LogoutController extends Controller
+class MeController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -17,9 +15,6 @@ class LogoutController extends Controller
      */
     public function __invoke(Request $request)
     {
-        Auth::logout();
-        return response()->json([
-            'data'    => 'success'
-        ], 200);
+        return $request->user();
     }
 }

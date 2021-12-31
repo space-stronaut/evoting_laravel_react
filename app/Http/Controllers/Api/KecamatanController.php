@@ -93,6 +93,17 @@ class KecamatanController extends Controller
         ],200);
     }
 
+    public function search($id)
+    {
+        $query = $id;
+
+        $kecamatans = Kecamatan::where('namaKecamatan', 'like', '%'.$query.'%')->get();
+
+        return response()->json([
+            'kecamatans' => $kecamatans
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

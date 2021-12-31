@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Desa;
-use App\Models\Kecamatan;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class DesaController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,23 +15,10 @@ class DesaController extends Controller
      */
     public function index()
     {
-        $desas = Desa::join('kecamatans', 'desas.kecamatanId', '=', 'kecamatans.id')->get();
-            $kecamatans = Kecamatan::all();
-
-            return response()->json([
-                'desas' => $desas,
-                'kecamatans' => $kecamatans
-            ], 200);
-    }
-
-    public function search($id)
-    {
-        $query = $id;
-        $desas = Desa::where('nama', 'like', '%'.$query.'%')->join('kecamatans', 'desas.kecamatanId', '=', 'kecamatans.id')->get();
+        $users = User::all();
 
         return response()->json([
-            'desas' => $desas,
-            'query' => $query
+            'users' => $users
         ]);
     }
 
@@ -54,10 +40,16 @@ class DesaController extends Controller
      */
     public function store(Request $request)
     {
-        Desa::create($request->all());
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'noHp' => $request->noHp,
+            'roles' => $request->roles
+        ]);
 
         return response()->json([
-            'success' => true
+            'status' => true
         ]);
     }
 
@@ -92,10 +84,28 @@ class DesaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Desa::find($id)->update($request->all());
+        $pass = User::find($id)->password;
+
+        if ($request->password) {
+            User::find($id)->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'noHp' => $request->noHp,
+                'roles' => $request->roles
+            ]);
+        }else{
+            User::find($id)->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $pass,
+                'noHp' => $request->noHp,
+                'roles' => $request->roles
+            ]);
+        }
 
         return response()->json([
-            'success' => true
+            'status' => true
         ]);
     }
 
@@ -107,10 +117,20 @@ class DesaController extends Controller
      */
     public function destroy($id)
     {
-        Desa::find($id)->delete();
+        User::find($id)->delete();
 
         return response()->json([
-            'success' => true
+            'status' => true
+        ]);
+    }
+
+    public function search($id)
+    {
+        $query = $id;
+        $users = User::where('name', 'like', '%'.$query.'%')->orWhere('email', 'like', '%'.$query.'%')->orWhere('noHp', 'like', '%'.$query.'%')->get();
+
+        return response()->json([
+            'users' => $users
         ]);
     }
 }

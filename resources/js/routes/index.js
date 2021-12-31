@@ -7,6 +7,8 @@ import Auth from '../middleware/Auth'
 import KecamatanIndex from '../pages/kecamatan/KecamatanIndex'
 import Calon from '../pages/calon/Calon'
 import Desa from '../pages/desa/Desa'
+import Tps from '../pages/tps/Tps'
+import User from '../pages/user/User'
 
 export default function Router(){
     return (
@@ -35,6 +37,16 @@ export default function Router(){
             <Route path="/desa" element={
                 <Guest>
                     <Desa />
+                </Guest>
+            } />
+            <Route path="/tps" element={
+                <Guest>
+                    <Tps />
+                </Guest>
+            } />
+            <Route path="/user" element={
+                <Guest>
+                    <User />
                 </Guest>
             } />
         </Routes>

@@ -3,14 +3,25 @@ import { useEffect, useState } from "react"
 import { Button, Modal } from "react-bootstrap"
 import {toast} from 'react-toastify'
 
-export default function KecamatanIndex(){
+export default function User(){
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [show, setShow] = useState(false);
     const [edit, setEdit] = useState(false)
-    const [namaKecamatan, setNamaKecamatan] = useState('')
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [noHp, setNoHp] = useState('')
+    const [roles, setRoles] = useState('')
     const [error, setError] = useState([])
     const [id, setId] = useState(null)
+    const credentials = {
+        name,
+        email,
+        password,
+        noHp,
+        roles
+    }
 
     const handleClose = () => {
         setShow(false)
@@ -20,21 +31,30 @@ export default function KecamatanIndex(){
 
     const handleEditClose = () => {
         setEdit(false)
-        setNamaKecamatan('')
+        setCredentials({
+            name : '',
+            email : '',
+            password : '',
+            noHp : '',
+            roles : ''
+        })
         setId(null)
     };
     const handleEditShow = (e) => {
         setEdit(true)
-        setNamaKecamatan(e.namaKecamatan)
+        setName(e.name)
+        setEmail(e.email)
+        setNoHp(e.noHp)
+        setRoles(e.roles)
         setId(e.id)
     };
 
 
     const getData = async() => {
         try {
-            const response = await axios.get('/api/kecamatan')
+            const response = await axios.get('/api/user')
 
-            setData(response.data.kecamatans)
+            setData(response.data.users)
             console.log(response)
         } catch (error) {
             console.log(error)
@@ -44,7 +64,7 @@ export default function KecamatanIndex(){
 
     const deleteData = async(id) => {
         try {
-            await axios.delete('/api/kecamatan/' + id);
+            await axios.delete('/api/user/' + id);
             toast.success("Data Berhasil Dihapus")
             getData()
         } catch (error) {
@@ -55,7 +75,7 @@ export default function KecamatanIndex(){
     const storeData = async(e) => {
         e.preventDefault()
         try {
-            const response = await axios.post('/api/kecamatan', {namaKecamatan})
+            const response = await axios.post('/api/user', credentials)
             console.log(response)
             getData()
             setShow(false)
@@ -69,7 +89,7 @@ export default function KecamatanIndex(){
     const updateData = async(e) => {
         e.preventDefault()
         try {
-            const response = await axios.put('/api/kecamatan/' + id, {namaKecamatan})
+            const response = await axios.put('/api/user/' + id, credentials)
             console.log(response)
             getData()
             setEdit(false)
@@ -84,8 +104,8 @@ export default function KecamatanIndex(){
         setLoading(false)
         try {
             if(e.length > 0){
-                const response = await axios.get('/api/kecamatan/search/' + e)
-                setData(response.data.kecamatans)
+                const response = await axios.get('/api/user/search/' + e)
+                setData(response.data.users)
                 setLoading(true)
             }else{
                 getData()
@@ -108,7 +128,7 @@ export default function KecamatanIndex(){
             <div className="card">
                 <div className="card-header d-flex justify-content-between align-items-center">
                     <span>
-                        Kecamatan
+                        User Management
                     </span>
                     <span>
                         <Button variant="primary" onClick={handleShow}>Create Data</Button>
@@ -123,7 +143,9 @@ export default function KecamatanIndex(){
                     <table className="table">
                         <thead className="thead-dark">
                             <tr>
-                                <th scope="col">Nama Kecamatan</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">role</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -139,7 +161,13 @@ export default function KecamatanIndex(){
                                         data.map(e => (
                                             <tr key={e.id}>
                                                 <td>
-                                                    {e.namaKecamatan}
+                                                    {e.name}
+                                                </td>
+                                                <td>
+                                                    {e.email}
+                                                </td>
+                                                <td>
+                                                    {e.roles}
                                                 </td>
                                                 <td>
                                                     <button className="btn btn-danger" onClick={() => deleteData(e.id)}>Hapus</button>
@@ -165,15 +193,29 @@ export default function KecamatanIndex(){
             <Modal.Body>
                 <form onSubmit={storeData}>
                     <div className="form-group">
-                        <label htmlFor="">Nama Kecamatan</label>
-                        <input type="text" name="" value={namaKecamatan} onChange={(e) => setNamaKecamatan(e.target.value)} id="" className={`form-control ${error.length > 0 ? 'is-invalid' : ''}`} />
-                        {
-                            error.namaKecamatan ? (
-                                <div className="invalid-feedback">
-                                    {error.namaKecamatan}
-                                </div>
-                            ) : ''
-                        }
+                        <label htmlFor="">Name</label>
+                        <input type="text" name="" value={name} onChange={(e) => setName(e.target.value)} id="" className={`form-control ${error.length > 0 ? 'is-invalid' : ''}`} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Email</label>
+                        <input type="email" name="" value={email} onChange={(e) => setEmail(e.target.value)} id="" className={`form-control ${error.length > 0 ? 'is-invalid' : ''}`} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Password</label>
+                        <input type="password" name="" value={password} onChange={(e) => setPassword(e.target.value)} id="" className={`form-control ${error.length > 0 ? 'is-invalid' : ''}`} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">No HP</label>
+                        <input type="text" name="" value={noHp} onChange={(e) => setNoHp(e.target.value)} id="" className={`form-control ${error.length > 0 ? 'is-invalid' : ''}`} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Role</label>
+                        <select name="" onChange={(e) => setRoles(e.target.value)} id="" className="form-control">
+                            <option value="">Pilih Role...</option>
+                            <option value="admin">Admin</option>
+                            <option value="saksi">Saksi</option>
+                            <option value="user">User</option>
+                        </select>
                     </div>
                     <div className="form-group">
                         <button className="btn btn-primary">Submit</button>
@@ -193,16 +235,30 @@ export default function KecamatanIndex(){
             </Modal.Header>
             <Modal.Body>
                 <form onSubmit={updateData}>
+                <div className="form-group">
+                        <label htmlFor="">Name</label>
+                        <input type="text" name="" value={name} onChange={(e) => setName(e.target.value)} id="" className={`form-control ${error.length > 0 ? 'is-invalid' : ''}`} />
+                    </div>
                     <div className="form-group">
-                        <label htmlFor="">Nama Kecamatan</label>
-                        <input type="text" name="" value={namaKecamatan} onChange={(e) => setNamaKecamatan(e.target.value)} id="" className={`form-control ${error.length > 0 ? 'is-invalid' : ''}`} />
-                        {
-                            error.namaKecamatan ? (
-                                <div className="invalid-feedback">
-                                    {error.namaKecamatan}
-                                </div>
-                            ) : ''
-                        }
+                        <label htmlFor="">Email</label>
+                        <input type="email" name="" value={email} onChange={(e) => setEmail(e.target.value)} id="" className={`form-control ${error.length > 0 ? 'is-invalid' : ''}`} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Password</label>
+                        <input type="password" name="" value={password} onChange={(e) => setPassword(e.target.value)} id="" className={`form-control ${error.length > 0 ? 'is-invalid' : ''}`} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">No HP</label>
+                        <input type="text" name="" value={noHp} onChange={(e) => setNoHp(e.target.value)} id="" className={`form-control ${error.length > 0 ? 'is-invalid' : ''}`} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Role</label>
+                        <select name="" onChange={(e) => setRoles(e.target.value)} id="" className="form-control">
+                            <option value="">Pilih Role...</option>
+                            <option value="admin">Admin</option>
+                            <option value="saksi">Saksi</option>
+                            <option value="user">User</option>
+                        </select>
                     </div>
                     <div className="form-group">
                         <button className="btn btn-primary">Submit</button>

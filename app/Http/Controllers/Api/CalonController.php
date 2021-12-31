@@ -54,6 +54,17 @@ class CalonController extends Controller
         ]);
     }
 
+    public function search($id)
+    {
+        $query = $id;
+        $calons = Calon::where('nama', 'like', '%'.$query.'%')->orWhere('no', 'like', '%'.$query.'%')->get();
+
+        return response()->json([
+            'calons' => $calons,
+            'query' => $query
+        ]);
+    }
+
     /**
      * Display the specified resource.
      *

@@ -9,12 +9,17 @@ export default function Navigation(){
     const navigate = useNavigate()
 
     const logout = async() => {
-       await axios.get('/api/logout')
+       await axios.get('/api/logout' ,{
+            headers : {
+                "Authorization" : "Bearer " + localStorage.getItem('token')
+            }
+        })
 
         localStorage.removeItem('token')
 
         setAuth({
-            check : false
+            check : false,
+            user : []
         })
         navigate('/login')
         toast.error("Kamu Telah Logout!")
@@ -49,7 +54,13 @@ export default function Navigation(){
                                 <Link className="nav-link" to={"/desa"}>Desa</Link>
                             </li>
                             <li className="nav-item">
+                                <Link className="nav-link" to={"/tps"}>TPS</Link>
+                            </li>
+                            <li className="nav-item">
                                 <Link className="nav-link" to={"/calon"}>Daftar Calon</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to={"/user"}>User</Link>
                             </li>
                             <li className="nav-item dropdown">
                                 <Link className="nav-link dropdown-toggle" to="javascript:void(0)" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
